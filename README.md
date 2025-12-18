@@ -1,4 +1,5 @@
-# Multiple Agent RL
+# Project overview
+## Multiple Agent RL
 Proposal of "Dstributed AI" exam project.
 
 Gridworld cooperative game.
@@ -17,17 +18,13 @@ One button, while pressed makes the gate open (self.gate_open = True).
 One gate, when open vecomes a walkable cell otherwise it behaves as a wall.
 
 ### Observation of each agent
-*[my_cur_pos,(other_cur_pos) * number of other agents, button_pos, gate_pos, gate_open]*
+*[other_agent_pos * (num_agents-1), button_pos, gate_pos, gate_open]*
 
 Where:
-- my_cur_pos, is the absolute position (x,y) of the agent itself
-- other_cur_pos, is the absolute position (x,y) of another agent
-- button_pos, is the absolute position (x,y) of the button
-- gate_pos, is the absolute position (x,y) of the gate
+- other_agent_pos, is the relative position (x,y) of another agent
+- button_pos, is the relative position (x,y) of the button
+- gate_pos, is the relative position (x,y) of the gate
 - gate_open, is an int value that represent wheather the gate is open (1) or close (0)
-
-
-
 
 ### Goal of the agents
 The agents goal is to walk in the other room, behind the gate.
@@ -51,4 +48,7 @@ First install the required dependencies
     conda env create -f environment.yml
     ```
 
-Then [execute the file](./src/myenv_3observations_rewards.py) containing the last version of the project.
+Then [execute the file](./src/myenv_5_sparse_reward.py) containing the last version of the project.
+
+# Process decription
+## (1) Indipendent learning

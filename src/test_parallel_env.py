@@ -1,5 +1,5 @@
 from pettingzoo.test import parallel_api_test
-from myenv_3observations_rewards import MyGridWorld
+from myenv_independent_IQ import MyGridWorld
 
 def test_my_env():
     env = MyGridWorld()

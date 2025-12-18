@@ -14,8 +14,10 @@ SPRITES_DIR = "./sprites"
 class MyGridWorld(ParallelEnv):
     metadata = {"render_modes": ["human"], "name": "custom_grid_v0"}
 
-    def __init__(self, render_mode=None):
-        self.grid_size = 15
+    def __init__(self, render_mode=None, grid_size=15):
+        if grid_size<8:
+            print("Error, need to insert a grid size greater or equal to 8")
+        self.grid_size = grid_size
         self.render_mode = render_mode
 
         ######## Agents, fixed components, and forbidden positions
@@ -24,17 +26,19 @@ class MyGridWorld(ParallelEnv):
         self.gate_open = False
 
         self.fixed_components = {
-            "button":  {"pos": np.array([self.grid_size//2+2, 1+3+2]), "reward": 0, "file": "button.png"},
-            "gate_open":  {"pos": np.array([self.grid_size//2, 1+3]), "reward": 0, "file": "gate_open.png"},
-            "gate_close":  {"pos": np.array([self.grid_size//2, 1+3]), "reward": 0, "file": "gate_close.png"}   
+            "button":  {"pos": np.array([self.grid_size//2+2, 1+3+2]), "file": "button.png"},
+            "gate_open":  {"pos": np.array([self.grid_size//2, 1+3]), "file": "gate_open.png"},
+            "gate_close":  {"pos": np.array([self.grid_size//2, 1+3]), "file": "gate_close.png"}   
         }
         self.button_pos = self.fixed_components["button"]["pos"]
         self.gate_pos = self.fixed_components["gate_open"]["pos"] 
 
         self.x_range = (1, self.grid_size-1-1)
         self.y_range = (1+3+1, self.grid_size-1-1)
-        self.forbidden_position = [tuple(self.fixed_components["button"]["pos"])]
-    
+        self.forbidden_position = {tuple(self.button_pos)}    
+
+        self.max_cycles = 100
+        self.current_cycles = 0
         ######## Pygame graphic configuration 
         self.window_size = 810
         self.cell_size = self.window_size // self.grid_size
@@ -56,11 +60,11 @@ class MyGridWorld(ParallelEnv):
         ######## Action space and observation space
         # Five possible actions in each grid: stay(0), up(1), down(2), left(3), right(4)
         self.action_spaces = {a: spaces.Discrete(5) for a in self.possible_agents}
-        OBSERVATION_DIM = 2*len(self.agents)+3
+        OBSERVATION_DIM = 2*(len(self.agents)-1)+2*2+1
         self.observation_spaces = {
             a: spaces.Box(low=0, high=self.grid_size-1, shape=(OBSERVATION_DIM,), dtype=np.int32) 
             for a in self.possible_agents
-        }    
+        }
 
 
     # Boilerplate PettingZoo
@@ -74,8 +78,9 @@ class MyGridWorld(ParallelEnv):
     '''
     def step(self, actions):
         if not self.agents: return {}, {}, {}, {}, {}
+        self.current_cycles += 1
         
-        rewards = {a: 0 for a in self.agents}
+        rewards = {a: -1 for a in self.agents}
         terminations = {a: False for a in self.agents}
         truncations = {a: False for a in self.agents}
         infos = {a: {} for a in self.agents}
@@ -106,11 +111,7 @@ class MyGridWorld(ParallelEnv):
                 desired_positions[agent] = current_pos 
             else:
                 desired_positions[agent] = target_pos
-                
-            # TO DO: write reward here
-            for name, data in self.fixed_components.items():
-                pass
-        
+                        
         # If gate was open remove a wall, if gate was closed update the position of those who wanted to cross it
         self.gate_open = button_pressed
         if self.gate_open:
@@ -128,7 +129,7 @@ class MyGridWorld(ParallelEnv):
         for agent, pos in desired_positions.items():
             pos_tuple = tuple(pos)
             target_counts[pos_tuple].append(agent)
-            
+
         # Solve eventual conflicts
         for pos_tuple, agents_at_target in target_counts.items():      
             # Case 1: no contended position
@@ -150,8 +151,25 @@ class MyGridWorld(ParallelEnv):
                 agents_at_target.remove(winning_agent)
                 for losing_agent in agents_at_target[:]:
                     final_positions[losing_agent] = self.agent_positions[losing_agent] 
-
         self.agent_positions = final_positions
+
+        # Negative reward if an agent is on the bottom area and is not pressing the button
+        agents_upper_area = 0
+        for a, pos in self.agent_positions.items():
+            if pos[1]<4:
+                rewards[a] = +1
+                agents_upper_area+=1
+            if (pos[0]==self.button_pos[0] and pos[1]==self.button_pos[1]):
+                rewards[a] = +1
+
+       
+        if agents_upper_area == len(self.agents)-1:
+            rewards = {a: +100 for a in self.agents}
+            terminations = {a: True for a in self.agents}
+        if self.current_cycles >= self.max_cycles:
+            truncations= {a: True for a in self.agents}
+            rewards = {a: -100 for a in self.agents}
+
         self.agents = [a for a in self.agents if not terminations[a]]
 
         if self.render_mode == "human":
@@ -162,14 +180,22 @@ class MyGridWorld(ParallelEnv):
     '''
     Determines initial condition of the simulation
     '''
+
     def generate_valid_position(self):
         while True:
-            x = np.random.randint(self.x_range)
-            y = np.random.randint(self.y_range)
-            new_position = (y, x)
+            x = np.random.randint(self.x_range[0], self.x_range[1])
+            y = np.random.randint(self.y_range[0], self.y_range[1])
+            new_position = tuple((x, y))
 
             if new_position not in self.forbidden_position:
-                return np.array([x, y])
+                return new_position
+            
+    def generate_set_initial_positions(self):
+        set_initial_positions = set()
+        while len(set_initial_positions)<len(self.possible_agents):
+            new_pos = self.generate_valid_position()
+            set_initial_positions.add(new_pos)
+        return set_initial_positions
     
     def generate_test_values(self, agent_num):
         if agent_num==1:
@@ -179,9 +205,12 @@ class MyGridWorld(ParallelEnv):
 
     def reset(self, seed=None, options=None):
         self.agents = self.possible_agents[:]
+        set_initial_positions = list(self.generate_set_initial_positions())
+        self.current_cycles = 0
+
         self.agent_positions = {
-            "agent1": np.array(self.generate_test_values(1)),
-            "agent2": np.array(self.generate_test_values(2))
+            "agent1": np.array(set_initial_positions[0]),
+            "agent2": np.array(set_initial_positions[1])
         }
         
         # To visualize the reset position if "human" mode on
@@ -197,13 +226,13 @@ class MyGridWorld(ParallelEnv):
         observations = {}
         for observing_agent in self.agents:
             obs_segments = []
+            observing_agent_pos = self.agent_positions[observing_agent]
             
-            obs_segments.append(self.agent_positions[observing_agent])
             for other_agent in self.agents:
                 if other_agent != observing_agent:
-                    obs_segments.append(self.agent_positions[other_agent])
-            obs_segments.append(self.button_pos)
-            obs_segments.append(self.gate_pos)
+                    obs_segments.append(self.agent_positions[other_agent] - observing_agent_pos)
+            obs_segments.append(self.button_pos- observing_agent_pos)
+            obs_segments.append(self.gate_pos -observing_agent_pos)
             obs_segments.append(gate_status_info)
             observations[observing_agent] = np.concatenate(obs_segments, dtype=np.int32)
         return observations
