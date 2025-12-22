@@ -1,1 +1,0 @@
-{"train/epsilon":0.0820336944319021,"_step":5000,"_wandb":{"runtime":21},"train/reward":188,"episode":5000,"test/avg_steps":6.7,"test/success_rate":1,"_runtime":21.64618966,"train/steps":8,"train/success":1,"_timestamp":1.7664016064773676e+09,"test/avg_reward":194.2}
