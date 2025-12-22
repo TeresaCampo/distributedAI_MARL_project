@@ -1,0 +1,1 @@
+{"_wandb":{"runtime":41},"_step":5000,"test/success_rate":0,"_runtime":41.234506102,"episode":5000,"test/avg_reward":-321.2,"train/success":0,"train/reward":-246,"train/steps":100,"_timestamp":1.7663984309321828e+09,"train/epsilon":0.22307995146913462,"test/avg_steps":100}

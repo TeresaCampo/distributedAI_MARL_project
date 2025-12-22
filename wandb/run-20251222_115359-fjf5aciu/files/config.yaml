@@ -1,0 +1,65 @@
+_wandb:
+    value:
+        cli_version: 0.23.1
+        e:
+            yp6ctf5r55nqdq88zesrxs9g0ga5s7lb:
+                codePath: src/performance_evaluation/evalution_stistics_maker_wandb.py
+                codePathLocal: src/performance_evaluation/evalution_stistics_maker_wandb.py
+                cpu_count: 6
+                cpu_count_logical: 12
+                disk:
+                    /:
+                        total: "263086084096"
+                        used: "141984092160"
+                email: 299011@studenti.unimore.it
+                executable: /home/terra/anaconda3/envs/MARL/bin/python
+                git:
+                    commit: cbdf562dd2c729b0a9d55cf31282668b0dc33866
+                    remote: https://github.com/TeresaCampo/distributed_project.git
+                host: terra-HP-ZBook-Fury-15-G7-Mobile-Workstation
+                memory:
+                    total: "33417539584"
+                os: Linux-6.8.0-90-generic-x86_64-with-glibc2.35
+                program: /home/terra/Desktop/unimore/distributed_project/src/performance_evaluation/evalution_stistics_maker_wandb.py
+                python: CPython 3.10.19
+                root: /home/terra/Desktop/unimore/distributed_project
+                startedAt: "2025-12-22T10:53:59.652137Z"
+                writerId: yp6ctf5r55nqdq88zesrxs9g0ga5s7lb
+        m: []
+        python_version: 3.10.19
+        t:
+            "3":
+                - 2
+                - 13
+                - 16
+                - 61
+            "4": 3.10.19
+            "5": 0.23.1
+            "10":
+                - 20
+            "12": 0.23.1
+            "13": linux-x86_64
+algorithm:
+    value: Independent_IQ
+epsilon_decay:
+    value: 0.9995
+gamma:
+    value: 0.9
+grid_size:
+    value: 8
+initial_epsilon:
+    value: 1
+lr:
+    value: 0.1
+min_epsilon:
+    value: 0.01
+n_episodes:
+    value: 5000
+n_seeds:
+    value: 3
+n_test_episodes:
+    value: 10
+reward_type:
+    value: Sparse
+test_interval:
+    value: 50

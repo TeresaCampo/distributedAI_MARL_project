@@ -1,0 +1,88 @@
+avg steps 100.0
+Ep 50 | Test Rate: 0.00 | Rew: -398.0
+avg steps 100.0
+Ep 100 | Test Rate: 0.00 | Rew: -340.4
+avg steps 100.0
+Ep 150 | Test Rate: 0.00 | Rew: -284.6
+avg steps 100.0
+Ep 200 | Test Rate: 0.00 | Rew: -321.6
+avg steps 100.0
+Ep 250 | Test Rate: 0.00 | Rew: -283.6
+avg steps 100.0
+Ep 300 | Test Rate: 0.00 | Rew: -303.4
+avg steps 100.0
+Ep 350 | Test Rate: 0.00 | Rew: -302.4
+avg steps 100.0
+Ep 400 | Test Rate: 0.00 | Rew: -301.6
+avg steps 100.0
+Ep 450 | Test Rate: 0.00 | Rew: -244.6
+avg steps 100.0
+Ep 500 | Test Rate: 0.00 | Rew: -282.6
+avg steps 100.0
+Ep 550 | Test Rate: 0.00 | Rew: -360.0
+avg steps 100.0
+Ep 600 | Test Rate: 0.00 | Rew: -358.8
+avg steps 100.0
+Ep 650 | Test Rate: 0.00 | Rew: -264.0
+avg steps 100.0
+Ep 700 | Test Rate: 0.00 | Rew: -378.4
+avg steps 100.0
+Ep 750 | Test Rate: 0.00 | Rew: -353.2
+avg steps 100.0
+Ep 800 | Test Rate: 0.00 | Rew: -262.6
+avg steps 100.0
+Ep 850 | Test Rate: 0.00 | Rew: -321.6
+avg steps 100.0
+Ep 900 | Test Rate: 0.00 | Rew: -320.8
+avg steps 100.0
+Ep 950 | Test Rate: 0.00 | Rew: -378.4
+avg steps 100.0
+Ep 1000 | Test Rate: 0.00 | Rew: -321.6
+avg steps 100.0
+Ep 1050 | Test Rate: 0.00 | Rew: -301.8
+avg steps 100.0
+Ep 1100 | Test Rate: 0.00 | Rew: -226.6
+avg steps 100.0
+Ep 1150 | Test Rate: 0.00 | Rew: -226.0
+avg steps 100.0
+Ep 1200 | Test Rate: 0.00 | Rew: -244.6
+avg steps 100.0
+Ep 1250 | Test Rate: 0.00 | Rew: -378.4
+avg steps 100.0
+Ep 1300 | Test Rate: 0.00 | Rew: -320.4
+avg steps 100.0
+Ep 1350 | Test Rate: 0.00 | Rew: -378.4
+avg steps 100.0
+Ep 1400 | Test Rate: 0.00 | Rew: -360.4
+avg steps 100.0
+Ep 1450 | Test Rate: 0.00 | Rew: -303.0
+avg steps 100.0
+Ep 1500 | Test Rate: 0.00 | Rew: -295.2
+avg steps 100.0
+Ep 1550 | Test Rate: 0.00 | Rew: -283.4
+avg steps 100.0
+Ep 1600 | Test Rate: 0.00 | Rew: -300.8
+avg steps 100.0
+Ep 1650 | Test Rate: 0.00 | Rew: -321.4
+avg steps 100.0
+Ep 1700 | Test Rate: 0.00 | Rew: -284.0
+avg steps 100.0
+Ep 1750 | Test Rate: 0.00 | Rew: -246.0
+avg steps 100.0
+Ep 1800 | Test Rate: 0.00 | Rew: -265.4
+avg steps 100.0
+Ep 1850 | Test Rate: 0.00 | Rew: -292.2
+avg steps 100.0
+Ep 1900 | Test Rate: 0.00 | Rew: -207.8
+avg steps 100.0
+Ep 1950 | Test Rate: 0.00 | Rew: -225.2
+Traceback (most recent call last):
+  File "/home/terra/Desktop/unimore/distributed_project/src/performance_evaluation/evalution_stistics_maker_wandb.py", line 176, in <module>
+    train_reward, train_steps, train_success = run_single_episode(env, agents, is_training=True)
+  File "/home/terra/Desktop/unimore/distributed_project/src/performance_evaluation/evalution_stistics_maker_wandb.py", line 45, in run_single_episode
+    next_observations, rewards, terminations, truncations, infos = env.step(actions)
+  File "/home/terra/Desktop/unimore/distributed_project/src/myenv_5_sparse_reward.py", line 102, in step
+    is_gate = (target_pos == self.gate_pos).all()
+  File "/home/terra/.local/lib/python3.10/site-packages/numpy/_core/_methods.py", line 67, in _all
+    def _all(a, axis=None, dtype=None, out=None, keepdims=False, *, where=True):
+KeyboardInterrupt

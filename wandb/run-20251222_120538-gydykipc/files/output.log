@@ -1,0 +1,200 @@
+avg steps 100.0
+Ep 50 | Test Rate: 0.00 | Rew: -261.2
+avg steps 90.3
+Ep 100 | Test Rate: 0.10 | Rew: -201.4
+avg steps 100.0
+Ep 150 | Test Rate: 0.00 | Rew: -281.4
+avg steps 100.0
+Ep 200 | Test Rate: 0.00 | Rew: -261.6
+avg steps 100.0
+Ep 250 | Test Rate: 0.00 | Rew: -243.6
+avg steps 100.0
+Ep 300 | Test Rate: 0.00 | Rew: -252.6
+avg steps 100.0
+Ep 350 | Test Rate: 0.00 | Rew: -291.0
+avg steps 100.0
+Ep 400 | Test Rate: 0.00 | Rew: -289.6
+avg steps 100.0
+Ep 450 | Test Rate: 0.00 | Rew: -290.4
+avg steps 100.0
+Ep 500 | Test Rate: 0.00 | Rew: -272.4
+avg steps 100.0
+Ep 550 | Test Rate: 0.00 | Rew: -223.2
+avg steps 100.0
+Ep 600 | Test Rate: 0.00 | Rew: -247.8
+avg steps 90.6
+Ep 650 | Test Rate: 0.10 | Rew: -232.8
+avg steps 100.0
+Ep 700 | Test Rate: 0.00 | Rew: -217.8
+avg steps 100.0
+Ep 750 | Test Rate: 0.00 | Rew: -226.0
+avg steps 100.0
+Ep 800 | Test Rate: 0.00 | Rew: -292.2
+avg steps 100.0
+Ep 850 | Test Rate: 0.00 | Rew: -217.4
+avg steps 100.0
+Ep 900 | Test Rate: 0.00 | Rew: -319.8
+avg steps 100.0
+Ep 950 | Test Rate: 0.00 | Rew: -243.0
+avg steps 71.8
+Ep 1000 | Test Rate: 0.30 | Rew: -123.4
+avg steps 100.0
+Ep 1050 | Test Rate: 0.00 | Rew: -281.0
+avg steps 100.0
+Ep 1100 | Test Rate: 0.00 | Rew: -335.8
+avg steps 100.0
+Ep 1150 | Test Rate: 0.00 | Rew: -206.6
+avg steps 100.0
+Ep 1200 | Test Rate: 0.00 | Rew: -228.8
+avg steps 100.0
+Ep 1250 | Test Rate: 0.00 | Rew: -262.0
+avg steps 100.0
+Ep 1300 | Test Rate: 0.00 | Rew: -308.2
+avg steps 55.5
+Ep 1350 | Test Rate: 0.50 | Rew: -65.8
+avg steps 100.0
+Ep 1400 | Test Rate: 0.00 | Rew: -245.0
+avg steps 100.0
+Ep 1450 | Test Rate: 0.00 | Rew: -280.4
+avg steps 81.6
+Ep 1500 | Test Rate: 0.20 | Rew: -215.2
+avg steps 90.9
+Ep 1550 | Test Rate: 0.10 | Rew: -225.0
+avg steps 100.0
+Ep 1600 | Test Rate: 0.00 | Rew: -272.6
+avg steps 100.0
+Ep 1650 | Test Rate: 0.00 | Rew: -272.8
+avg steps 90.4
+Ep 1700 | Test Rate: 0.10 | Rew: -261.2
+avg steps 100.0
+Ep 1750 | Test Rate: 0.00 | Rew: -298.4
+avg steps 64.1
+Ep 1800 | Test Rate: 0.40 | Rew: -104.4
+avg steps 61.6
+Ep 1850 | Test Rate: 0.40 | Rew: -77.8
+avg steps 63.4
+Ep 1900 | Test Rate: 0.40 | Rew: -65.6
+avg steps 54.6
+Ep 1950 | Test Rate: 0.50 | Rew: -101.6
+avg steps 62.1
+Ep 2000 | Test Rate: 0.40 | Rew: -110.0
+avg steps 44.6
+Ep 2050 | Test Rate: 0.60 | Rew: 3.0
+avg steps 53.2
+Ep 2100 | Test Rate: 0.50 | Rew: -64.0
+avg steps 27.9
+Ep 2150 | Test Rate: 0.80 | Rew: 83.0
+avg steps 19.1
+Ep 2200 | Test Rate: 0.90 | Rew: 131.6
+avg steps 26.0
+Ep 2250 | Test Rate: 0.80 | Rew: 113.8
+avg steps 26.2
+Ep 2300 | Test Rate: 0.80 | Rew: 114.0
+avg steps 27.4
+Ep 2350 | Test Rate: 0.80 | Rew: 93.0
+avg steps 35.8
+Ep 2400 | Test Rate: 0.70 | Rew: 17.2
+avg steps 20.0
+Ep 2450 | Test Rate: 0.90 | Rew: 151.0
+avg steps 7.5
+Ep 2500 | Test Rate: 1.00 | Rew: 193.8
+avg steps 16.8
+Ep 2550 | Test Rate: 0.90 | Rew: 135.4
+avg steps 27.5
+Ep 2600 | Test Rate: 0.80 | Rew: 93.8
+avg steps 16.2
+Ep 2650 | Test Rate: 0.90 | Rew: 155.4
+avg steps 19.5
+Ep 2700 | Test Rate: 0.90 | Rew: 151.6
+avg steps 6.7
+Ep 2750 | Test Rate: 1.00 | Rew: 196.4
+avg steps 8.8
+Ep 2800 | Test Rate: 1.00 | Rew: 193.4
+avg steps 25.3
+Ep 2850 | Test Rate: 0.80 | Rew: 76.2
+avg steps 7.2
+Ep 2900 | Test Rate: 1.00 | Rew: 195.4
+avg steps 44.4
+Ep 2950 | Test Rate: 0.60 | Rew: 16.2
+avg steps 17.4
+Ep 3000 | Test Rate: 0.90 | Rew: 135.0
+avg steps 9.1
+Ep 3050 | Test Rate: 1.00 | Rew: 191.4
+avg steps 7.4
+Ep 3100 | Test Rate: 1.00 | Rew: 195.2
+avg steps 8.3
+Ep 3150 | Test Rate: 1.00 | Rew: 193.2
+avg steps 16.8
+Ep 3200 | Test Rate: 0.90 | Rew: 154.8
+avg steps 7.7
+Ep 3250 | Test Rate: 1.00 | Rew: 193.0
+avg steps 26.8
+Ep 3300 | Test Rate: 0.80 | Rew: 75.4
+avg steps 8.1
+Ep 3350 | Test Rate: 1.00 | Rew: 194.4
+avg steps 8.3
+Ep 3400 | Test Rate: 1.00 | Rew: 194.2
+avg steps 5.4
+Ep 3450 | Test Rate: 1.00 | Rew: 197.4
+avg steps 7.0
+Ep 3500 | Test Rate: 1.00 | Rew: 193.6
+avg steps 6.8
+Ep 3550 | Test Rate: 1.00 | Rew: 194.0
+avg steps 7.8
+Ep 3600 | Test Rate: 1.00 | Rew: 193.0
+avg steps 16.3
+Ep 3650 | Test Rate: 0.90 | Rew: 134.6
+avg steps 8.3
+Ep 3700 | Test Rate: 1.00 | Rew: 193.4
+avg steps 7.2
+Ep 3750 | Test Rate: 1.00 | Rew: 195.2
+avg steps 8.1
+Ep 3800 | Test Rate: 1.00 | Rew: 193.4
+avg steps 7.0
+Ep 3850 | Test Rate: 1.00 | Rew: 195.4
+avg steps 8.4
+Ep 3900 | Test Rate: 1.00 | Rew: 192.8
+avg steps 8.9
+Ep 3950 | Test Rate: 1.00 | Rew: 193.2
+avg steps 8.0
+Ep 4000 | Test Rate: 1.00 | Rew: 194.8
+avg steps 7.0
+Ep 4050 | Test Rate: 1.00 | Rew: 194.4
+avg steps 7.6
+Ep 4100 | Test Rate: 1.00 | Rew: 194.6
+avg steps 19.4
+Ep 4150 | Test Rate: 0.90 | Rew: 150.8
+avg steps 26.0
+Ep 4200 | Test Rate: 0.80 | Rew: 93.8
+avg steps 16.9
+Ep 4250 | Test Rate: 0.90 | Rew: 143.0
+avg steps 7.8
+Ep 4300 | Test Rate: 1.00 | Rew: 194.8
+avg steps 7.9
+Ep 4350 | Test Rate: 1.00 | Rew: 194.0
+avg steps 16.2
+Ep 4400 | Test Rate: 0.90 | Rew: 135.0
+avg steps 16.2
+Ep 4450 | Test Rate: 0.90 | Rew: 148.4
+avg steps 7.5
+Ep 4500 | Test Rate: 1.00 | Rew: 194.2
+avg steps 7.7
+Ep 4550 | Test Rate: 1.00 | Rew: 193.0
+avg steps 15.6
+Ep 4600 | Test Rate: 0.90 | Rew: 137.4
+avg steps 17.0
+Ep 4650 | Test Rate: 0.90 | Rew: 133.8
+avg steps 16.1
+Ep 4700 | Test Rate: 0.90 | Rew: 135.0
+avg steps 7.9
+Ep 4750 | Test Rate: 1.00 | Rew: 193.4
+avg steps 26.5
+Ep 4800 | Test Rate: 0.80 | Rew: 75.2
+avg steps 7.7
+Ep 4850 | Test Rate: 1.00 | Rew: 193.6
+avg steps 17.1
+Ep 4900 | Test Rate: 0.90 | Rew: 154.4
+avg steps 6.9
+Ep 4950 | Test Rate: 1.00 | Rew: 195.4
+avg steps 6.6
+Ep 5000 | Test Rate: 1.00 | Rew: 194.8
