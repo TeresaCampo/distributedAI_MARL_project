@@ -1,0 +1,141 @@
+-----------------------------------ITERATION 0, num episode 20.0------------------------------------
+TRAINING
+Rew:-70.59
+Steps per episode:100.0
+Success rate:0.0%
+TESTING
+Rew:-60.08
+Steps per episode:100.0
+Success rate:0.0%
+-----------------------------------ITERATION 1, num episode 40.0------------------------------------
+TRAINING
+Rew:-48.38
+Steps per episode:100.0
+Success rate:0.0%
+TESTING
+Rew:-54.44
+Steps per episode:100.0
+Success rate:0.0%
+/home/terra/anaconda3/envs/MARL/lib/python3.10/site-packages/ray/rllib/utils/metrics/stats/ema.py:124: RuntimeWarning: Mean of empty slice
+  return np.nanmean(self._values_to_merge)
+[36m(pid=gcs_server)[39m [2025-12-26 18:34:44,826 E 460074 460074] (gcs_server) gcs_server.cc:303: Failed to establish connection to the event+metrics exporter agent. Events and metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+[33m(raylet)[39m [2025-12-26 18:34:45,644 E 460188 460188] (raylet) main.cc:1032: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+[36m(MultiAgentEnvRunner pid=460242)[39m [2025-12-26 18:34:46,398 E 460242 460435] core_worker_process.cc:842: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+[2025-12-26 18:34:46,640 E 459886 460241] core_worker_process.cc:842: Failed to establish connection to the metrics exporter agent. Metrics will not be exported. Exporter agent status: RpcError: Running out of retries to initialize the metrics agent. rpc_code: 14
+-----------------------------------ITERATION 2, num episode 60.0------------------------------------
+TRAINING
+Rew:-35.75
+Steps per episode:100.0
+Success rate:0.0%
+TESTING
+Rew:-42.0
+Steps per episode:100.0
+Success rate:0.0%
+-----------------------------------ITERATION 3, num episode 80.0------------------------------------
+TRAINING
+Rew:-29.94
+Steps per episode:100.0
+Success rate:0.0%
+TESTING
+Rew:-24.63
+Steps per episode:100.0
+Success rate:0.0%
+-----------------------------------ITERATION 4, num episode 100.0-----------------------------------
+TRAINING
+Rew:-12.12
+Steps per episode:99.65
+Success rate:5.0%
+TESTING
+Rew:-23.14
+Steps per episode:100.0
+Success rate:0.0%
+-----------------------------------ITERATION 5, num episode 121.0-----------------------------------
+TRAINING
+Rew:5.31
+Steps per episode:95.1
+Success rate:14.000000000000002%
+TESTING
+Rew:-0.42
+Steps per episode:100.0
+Success rate:0.0%
+-----------------------------------ITERATION 6, num episode 141.0-----------------------------------
+TRAINING
+Rew:11.35
+Steps per episode:97.75
+Success rate:15.0%
+TESTING
+Rew:1.76
+Steps per episode:100.0
+Success rate:0.0%
+-----------------------------------ITERATION 7, num episode 162.0-----------------------------------
+TRAINING
+Rew:15.22
+Steps per episode:95.9
+Success rate:14.000000000000002%
+TESTING
+Rew:-36.78
+Steps per episode:100.0
+Success rate:0.0%
+-----------------------------------ITERATION 8, num episode 182.0-----------------------------------
+TRAINING
+Rew:-0.05
+Steps per episode:97.65
+Success rate:10.0%
+TESTING
+Rew:-41.34
+Steps per episode:100.0
+Success rate:0.0%
+-----------------------------------ITERATION 9, num episode 206.0-----------------------------------
+TRAINING
+Rew:64.63
+Steps per episode:84.71
+Success rate:42.0%
+TESTING
+Rew:-33.74
+Steps per episode:100.0
+Success rate:0.0%
+----------------------------------ITERATION 10, num episode 228.0-----------------------------------
+TRAINING
+Rew:45.43
+Steps per episode:90.23
+Success rate:32.0%
+TESTING
+Rew:-44.66
+Steps per episode:100.0
+Success rate:0.0%
+----------------------------------ITERATION 11, num episode 250.0-----------------------------------
+TRAINING
+Rew:23.78
+Steps per episode:91.27
+Success rate:23.0%
+TESTING
+Rew:-3.58
+Steps per episode:100.0
+Success rate:0.0%
+----------------------------------ITERATION 12, num episode 275.0-----------------------------------
+TRAINING
+Rew:76.73
+Steps per episode:81.76
+Success rate:44.0%
+TESTING
+Rew:-31.4
+Steps per episode:100.0
+Success rate:0.0%
+----------------------------------ITERATION 13, num episode 299.0-----------------------------------
+TRAINING
+Rew:70.46
+Steps per episode:83.5
+Success rate:42.0%
+TESTING
+Rew:-22.99
+Steps per episode:100.0
+Success rate:0.0%
+----------------------------------ITERATION 14, num episode 326.0-----------------------------------
+TRAINING
+Rew:107.21
+Steps per episode:73.74
+Success rate:59.0%
+TESTING
+Rew:-11.5
+Steps per episode:100.0
+Success rate:0.0%

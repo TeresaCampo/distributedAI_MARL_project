@@ -26,16 +26,21 @@ class MyGridWorld(ParallelEnv):
         self.gate_open = False
 
         self.fixed_components = {
-            "button":  {"pos": np.array([self.grid_size//2+2, 1+3+2]), "file": "button.png"},
+            "button1":  {"pos": np.array([self.grid_size//2+2, 1+3+2]), "file": "button.png"},
+            "button2":  {"pos": np.array([self.grid_size//2+2, 1+1]), "file": "button.png"},
+
             "gate_open":  {"pos": np.array([self.grid_size//2, 1+3]), "file": "gate_open.png"},
             "gate_close":  {"pos": np.array([self.grid_size//2, 1+3]), "file": "gate_close.png"}   
         }
-        self.button_pos = self.fixed_components["button"]["pos"]
+        self.button1_pos = self.fixed_components["button1"]["pos"]
+        self.button2_pos = self.fixed_components["button2"]["pos"]
+
         self.gate_pos = self.fixed_components["gate_open"]["pos"] 
+        self.target_final_pos = self.gate_pos+[0, -1]
 
         self.x_range = (1, self.grid_size-1-1)
         self.y_range = (1+3+1, self.grid_size-1-1)
-        self.forbidden_position = {tuple(self.button_pos)}    
+        self.forbidden_position = {tuple(self.button1_pos)}    
 
         self.max_cycles = 100
         self.current_cycles = 0
@@ -60,12 +65,26 @@ class MyGridWorld(ParallelEnv):
         ######## Action space and observation space
         # Five possible actions in each grid: stay(0), up(1), down(2), left(3), right(4)
         self.action_spaces = {a: spaces.Discrete(5) for a in self.possible_agents}
-        OBSERVATION_DIM = 2*(len(self.agents)-1)+2*2+1
+        OBSERVATION_DIM = 2*(len(self.agents)-1)+3*2+1
         self.observation_spaces = {
             a: spaces.Box(low=-(self.grid_size-1), high=self.grid_size-1, shape=(OBSERVATION_DIM,), dtype=np.float32) 
             for a in self.possible_agents
         }
+        self.state_spaces = {a: None for a in self.possible_agents}
 
+    def state(self):
+        observations = self.gather_observations()
+        global_state = []
+        
+        for agent in self.possible_agents:
+            if agent in observations:
+                global_state.append(observations[agent])
+            else:
+                # Se l'agente è morto/uscito, usa zeri
+                dim = self.observation_spaces[agent].shape[0]
+                global_state.append(np.zeros(dim, dtype=np.float32))
+                
+        return np.concatenate(global_state)
 
     # Boilerplate PettingZoo
     def observation_space(self, agent): return self.observation_spaces[agent]
@@ -78,7 +97,8 @@ class MyGridWorld(ParallelEnv):
         if not self.agents: return {}, {}, {}, {}, {}
         self.current_cycles += 1
         
-        rewards = {a: -1 for a in self.agents}
+        rewards = {a: 0 for a in self.agents}
+
         terminations = {a: False for a in self.agents}
         truncations = {a: False for a in self.agents}
         infos = {a: {} for a in self.agents}
@@ -98,7 +118,7 @@ class MyGridWorld(ParallelEnv):
             # Monitor button, gate and walls
             is_wall = self.grid_map[target_pos[0], target_pos[1]] == 1
             is_gate = (target_pos == self.gate_pos).all()
-            is_button = (target_pos == self.button_pos).all()
+            is_button = (target_pos == self.button1_pos).all() or (target_pos == self.button2_pos).all()
             
             if is_button:
                 button_pressed = True
@@ -154,23 +174,28 @@ class MyGridWorld(ParallelEnv):
         # Negative reward if an agent is on the bottom area and is not pressing the button
         agents_upper_area = 0
         for a, pos in self.agent_positions.items():
-            if pos[1]<4:
-                rewards[a] = +1
+            dist_target = np.linalg.norm(pos - self.target_final_pos)
+            if pos[1]<4:                                # Agent on upper area
+                rewards[a] = +0.5
                 agents_upper_area+=1
-            if (pos[0]==self.button_pos[0] and pos[1]==self.button_pos[1]):
-                rewards[a] = +1
 
+                if (pos == self.button2_pos).all():
+                    rewards[a] +=0.3
+            else:
+                rewards[a] -= (dist_target * 0.05)      # Agent on bottom area
+
+                if (pos == self.button1_pos).all():     # Agent on button
+                    rewards[a] += 0.3     
        
-        if agents_upper_area == len(self.agents)-1:
+        if agents_upper_area == len(self.agents):
             rewards = {a: +100 for a in self.agents}
             terminations = {a: True for a in self.agents}
         if self.current_cycles >= self.max_cycles:
             truncations= {a: True for a in self.agents}
-            rewards = {a: -100 for a in self.agents}
-
+            
         if self.render_mode == "human":
             self.render()
-
+            
         final_obs = self.gather_observations()
         self.agents = [a for a in self.agents if not terminations[a]]
 
@@ -179,6 +204,7 @@ class MyGridWorld(ParallelEnv):
     '''
     Determines initial condition of the simulation
     '''
+
     def generate_valid_position(self):
         while True:
             x = np.random.randint(self.x_range[0], self.x_range[1])
@@ -228,7 +254,8 @@ class MyGridWorld(ParallelEnv):
             for other_agent in self.agents:
                 if other_agent != observing_agent:
                     obs_segments.append(self.agent_positions[other_agent] - observing_agent_pos)
-            obs_segments.append(self.button_pos- observing_agent_pos)
+            obs_segments.append(self.button1_pos- observing_agent_pos)
+            obs_segments.append(self.button2_pos- observing_agent_pos)
             obs_segments.append(self.gate_pos -observing_agent_pos)
             obs_segments.append(gate_status_info)
             observations[observing_agent] = np.concatenate(obs_segments, dtype=np.float32)
@@ -348,7 +375,6 @@ class MyGridWorld(ParallelEnv):
             pygame.display.quit()
             pygame.quit()
 
-
 # My test execution
 if __name__ == '__main__':
     env = MyGridWorld(render_mode="human")
@@ -375,5 +401,3 @@ if __name__ == '__main__':
         print("\nSimulazione interrotta dall'utente.")
     finally:
         env.close()
-
-    

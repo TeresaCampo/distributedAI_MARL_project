@@ -1,0 +1,99 @@
+{
+    "os": "Linux-6.8.0-90-generic-x86_64-with-glibc2.35",
+    "python": "3.10.19",
+    "heartbeatAt": "2025-12-26T17:39:09.034057",
+    "startedAt": "2025-12-26T17:39:08.292584",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "https://github.com/TeresaCampo/distributed_project.git",
+        "commit": "e6dbb3553f70f9d089ce000f1c5c2a55af4309ce"
+    },
+    "email": "terry.campo.2002@gmail.com",
+    "root": "/home/terra/Desktop/unimore/distributed_project",
+    "host": "terra-HP-ZBook-Fury-15-G7-Mobile-Workstation",
+    "username": "terra",
+    "executable": "/home/terra/anaconda3/envs/MARL/bin/python",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 4400.150583333333,
+        "min": 800.0,
+        "max": 5100.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4399.42,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4399.981,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4397.224,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4400.058,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4406.404,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4400.039,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4399.543,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4400.067,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4391.966,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4396.108,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4400.783,
+            "min": 800.0,
+            "max": 5100.0
+        },
+        {
+            "current": 4400.016,
+            "min": 800.0,
+            "max": 5100.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 245.01800918579102,
+            "used": 141.8975715637207
+        }
+    },
+    "memory": {
+        "total": 31.122509002685547
+    }
+}

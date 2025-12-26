@@ -1,0 +1,66 @@
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Current SDK version is 0.17.9
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Configure stats pid to 459886
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Loading settings from /home/terra/.config/wandb/settings
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Loading settings from /home/terra/Desktop/unimore/distributed_project/src/policies/PPO/wandb/settings
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Loading settings from environment variables: {}
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Applying setup settings: {'_disable_service': False}
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Applying login settings: {}
+2025-12-26 18:33:59,896 INFO    MainThread:459886 [wandb_init.py:_log_setup():524] Logging user logs to /home/terra/Desktop/unimore/distributed_project/src/policies/PPO/wandb/run-20251226_183359-9y7tnzma/logs/debug.log
+2025-12-26 18:33:59,897 INFO    MainThread:459886 [wandb_init.py:_log_setup():525] Logging internal logs to /home/terra/Desktop/unimore/distributed_project/src/policies/PPO/wandb/run-20251226_183359-9y7tnzma/logs/debug-internal.log
+2025-12-26 18:33:59,897 INFO    MainThread:459886 [wandb_init.py:init():608] calling init triggers
+2025-12-26 18:33:59,897 INFO    MainThread:459886 [wandb_init.py:init():615] wandb.init called with sweep_config: {}
+config: {}
+2025-12-26 18:33:59,897 INFO    MainThread:459886 [wandb_init.py:init():633] re-initializing run, found existing run on stack: e0j8xtp8
+2025-12-26 18:33:59,899 INFO    MainThread:459886 [wandb_run.py:_finish():2162] finishing run 299011-unimore/gridworld_looseplay_2agents/e0j8xtp8
+2025-12-26 18:33:59,899 ERROR   MainThread:459886 [jupyter.py:save_history():436] Run pip install nbformat to save notebook history
+2025-12-26 18:33:59,900 INFO    MainThread:459886 [jupyter.py:save_ipynb():372] not saving jupyter notebook
+2025-12-26 18:33:59,900 INFO    MainThread:459886 [wandb_init.py:_jupyter_teardown():452] cleaning up jupyter logic
+2025-12-26 18:33:59,900 INFO    MainThread:459886 [wandb_run.py:_atexit_cleanup():2426] got exitcode: 0
+2025-12-26 18:33:59,900 INFO    MainThread:459886 [wandb_run.py:_restore():2408] restore
+2025-12-26 18:33:59,900 INFO    MainThread:459886 [wandb_run.py:_restore():2414] restore done
+2025-12-26 18:33:59,900 INFO    MainThread:459886 [wandb_run.py:_on_finish():2679] communicating current version
+2025-12-26 18:34:00,072 INFO    MainThread:459886 [wandb_run.py:_on_finish():2688] got version response upgrade_message: "wandb version 0.23.1 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2025-12-26 18:34:04,118 INFO    MainThread:459886 [wandb_run.py:_footer_history_summary_info():4088] rendering history
+2025-12-26 18:34:04,118 INFO    MainThread:459886 [wandb_run.py:_footer_history_summary_info():4120] rendering summary
+2025-12-26 18:34:04,121 INFO    MainThread:459886 [wandb_run.py:_footer_sync_info():4047] logging synced files
+2025-12-26 18:34:04,234 INFO    MainThread:459886 [wandb_init.py:init():658] starting backend
+2025-12-26 18:34:04,234 INFO    MainThread:459886 [wandb_init.py:init():662] setting up manager
+2025-12-26 18:34:04,235 INFO    MainThread:459886 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-12-26 18:34:04,236 INFO    MainThread:459886 [wandb_init.py:init():670] backend started and connected
+2025-12-26 18:34:04,241 INFO    MainThread:459886 [wandb_run.py:_label_probe_notebook():1344] probe notebook
+2025-12-26 18:34:04,241 INFO    MainThread:459886 [wandb_run.py:_label_probe_notebook():1354] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2025-12-26 18:34:04,241 INFO    MainThread:459886 [wandb_init.py:init():768] updated telemetry
+2025-12-26 18:34:04,244 INFO    MainThread:459886 [wandb_init.py:init():801] communicating run to backend with 90.0 second timeout
+2025-12-26 18:34:05,817 INFO    MainThread:459886 [wandb_init.py:init():852] starting run threads in backend
+2025-12-26 18:34:08,418 INFO    MainThread:459886 [wandb_run.py:_console_start():2465] atexit reg
+2025-12-26 18:34:08,418 INFO    MainThread:459886 [wandb_run.py:_redirect():2311] redirect: wrap_raw
+2025-12-26 18:34:08,418 INFO    MainThread:459886 [wandb_run.py:_redirect():2376] Wrapping output streams.
+2025-12-26 18:34:08,418 INFO    MainThread:459886 [wandb_run.py:_redirect():2401] Redirects installed.
+2025-12-26 18:34:08,418 INFO    MainThread:459886 [wandb_init.py:init():895] run started, returning control to user process
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Current SDK version is 0.17.9
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Configure stats pid to 459886
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Loading settings from /home/terra/.config/wandb/settings
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Loading settings from /home/terra/Desktop/unimore/distributed_project/src/policies/PPO/wandb/settings
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Loading settings from environment variables: {}
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Applying setup settings: {'_disable_service': False}
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_setup.py:_flush():77] Applying login settings: {}
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_init.py:_log_setup():524] Logging user logs to /home/terra/Desktop/unimore/distributed_project/src/policies/PPO/wandb/run-20251226_183422-blbzi7kf/logs/debug.log
+2025-12-26 18:34:22,290 INFO    MainThread:459886 [wandb_init.py:_log_setup():525] Logging internal logs to /home/terra/Desktop/unimore/distributed_project/src/policies/PPO/wandb/run-20251226_183422-blbzi7kf/logs/debug-internal.log
+2025-12-26 18:34:22,291 INFO    MainThread:459886 [wandb_init.py:_jupyter_setup():470] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x7be07d490bb0>
+2025-12-26 18:34:22,291 INFO    MainThread:459886 [wandb_init.py:init():608] calling init triggers
+2025-12-26 18:34:22,291 INFO    MainThread:459886 [wandb_init.py:init():615] wandb.init called with sweep_config: {}
+config: {}
+2025-12-26 18:34:22,291 INFO    MainThread:459886 [wandb_init.py:init():633] re-initializing run, found existing run on stack: 9y7tnzma
+2025-12-26 18:34:22,292 INFO    MainThread:459886 [wandb_run.py:_finish():2162] finishing run 299011-unimore/gridworld_looseplay_2agents/9y7tnzma
+2025-12-26 18:34:22,293 INFO    MainThread:459886 [wandb_run.py:_atexit_cleanup():2426] got exitcode: 0
+2025-12-26 18:34:22,293 INFO    MainThread:459886 [wandb_run.py:_restore():2408] restore
+2025-12-26 18:34:22,293 INFO    MainThread:459886 [wandb_run.py:_restore():2414] restore done
+2025-12-26 18:34:22,293 INFO    MainThread:459886 [wandb_run.py:_on_finish():2679] communicating current version
+2025-12-26 18:34:22,423 INFO    MainThread:459886 [wandb_run.py:_on_finish():2688] got version response upgrade_message: "wandb version 0.23.1 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2025-12-26 18:34:26,990 INFO    MainThread:459886 [wandb_run.py:_footer_history_summary_info():4088] rendering history
+2025-12-26 18:34:26,990 INFO    MainThread:459886 [wandb_run.py:_footer_history_summary_info():4120] rendering summary
+2025-12-26 18:34:26,993 INFO    MainThread:459886 [wandb_run.py:_footer_sync_info():4047] logging synced files

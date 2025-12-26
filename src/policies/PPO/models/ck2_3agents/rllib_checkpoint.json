@@ -1,0 +1,1 @@
+{"type": "Algorithm", "checkpoint_version": "1.1", "format": "cloudpickle", "state_file": "/home/terra/Desktop/unimore/distributed_project/src/policies/PPO/models/ck2_3agents/algorithm_state.pkl", "policy_ids": ["shared_policy"], "ray_version": "2.53.0", "ray_commit": "0de211850589aea71f842873bc32574c702ab492"}

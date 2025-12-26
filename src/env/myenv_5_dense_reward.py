@@ -14,14 +14,14 @@ SPRITES_DIR = "./sprites"
 class MyGridWorld(ParallelEnv):
     metadata = {"render_modes": ["human"], "name": "custom_grid_v0"}
 
-    def __init__(self, render_mode=None, grid_size=15):
+    def __init__(self, render_mode=None, n_agents = 2, grid_size=15):
         if grid_size<8:
             print("Error, need to insert a grid size greater or equal to 8")
         self.grid_size = grid_size
         self.render_mode = render_mode
 
         ######## Agents, fixed components, and forbidden positions
-        self.possible_agents = ["agent1", "agent2"]
+        self.possible_agents = [f"agent{i}" for i in range(1, n_agents+1)]
         self.agents = self.possible_agents[:]
         self.gate_open = False
 
@@ -187,12 +187,13 @@ class MyGridWorld(ParallelEnv):
         if self.current_cycles >= self.max_cycles:
             truncations= {a: True for a in self.agents}
             
-        self.agents = [a for a in self.agents if not terminations[a]]
-
         if self.render_mode == "human":
             self.render()
 
-        return self.gather_observations(), rewards, terminations, truncations, infos
+        final_obs = self.gather_observations()
+        self.agents = [a for a in self.agents if not terminations[a]]
+
+        return final_obs, rewards, terminations, truncations, infos
    
     '''
     Determines initial condition of the simulation
@@ -225,10 +226,9 @@ class MyGridWorld(ParallelEnv):
         set_initial_positions = list(self.generate_set_initial_positions())
         self.current_cycles = 0
 
-        self.agent_positions = {
-            "agent1": np.array(set_initial_positions[0]),
-            "agent2": np.array(set_initial_positions[1])
-        }
+        self.agent_positions = {}
+        for i, agent_id in enumerate(self.agents):
+            self.agent_positions[agent_id] = np.array(set_initial_positions[i])
         
         # To visualize the reset position if "human" mode on
         if self.render_mode == "human":
@@ -306,7 +306,6 @@ class MyGridWorld(ParallelEnv):
             self.window = pygame.display.set_mode((self.window_size, self.window_size))
             
             for agent_name in self.agents:
-               # self.agent_sprites[agent_name] = self._load_and_scale_sprite(f"{agent_name}.png", agent_name)
                self.agent_sprites[agent_name] = self._load_and_scale_sprite(".png", agent_name)
 
             for name, data in self.fixed_components.items():
