@@ -17,9 +17,8 @@ It implements all the necessary methods and has all the required class variables
 ## Env 5
 **env 5** is a simpler scenario, it has been used during the first part of the project in order to learn Environment building skills and RL basis.
 
-<p align="center">
-  <img src="readme_resources/demo_env5.gif" alt="Demo env5" width="350"/>
-</p>
+<img src="readme_resources/demo_env5.gif" alt="Demo env5" width="350"/>
+
 
 ### Elements
 Variable number of agents (in the simulation 2 and 4).
@@ -39,9 +38,7 @@ Where:
 ## Env 6
 **Env 6** is a more challenging scenario, it has been used to compare two different indipendent learning approaches.
 
-<p align="center">
 <img src="readme_resources/demo_env6.gif" alt="Demo env6" width="350">
-</p>
 
 
 ### Elements
@@ -68,6 +65,9 @@ In particular I tried three different learning policies:
 In particular I exploited [Ray library](https://docs.ray.io/en/latest/rllib/getting-started.html) implementation of PPO.  
 I was able to use Ray library to train agents on my custom model wrapping it as a PettingZoo envornment, [following documentation indications](https://docs.ray.io/en/latest/rllib/multi-agent-envs.html#:~:text=PettingZoo%20offers%20a%20repository%20of%20over%2050%20diverse%20multi%2Dagent%20environments%2C%20directly%20compatible%20with%20RLlib%20through%20the%20built%2Din%20PettingZooEnv%20wrapper%3A).
 
+
+Comparison of the learning processes is visibile in [this file](/src/strictplay_looseplay_comparison/comparison.ipynb).  
+The plots have been generated using files present in [this folder](/src/policies/PPO/).
 # To try it on your pc
 First install the required dependencies
 - **Solution 1**: :
@@ -84,6 +84,4 @@ First install the required dependencies
     ```bash
     conda env create -f environment.yml
     ```
-
-Then [execute the file](./src/myenv_5_sparse_reward.py) containing the last version of the project.
 
