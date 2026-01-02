@@ -1,5 +1,0 @@
-*** SIGTERM received at time=1766774892 on cpu 0 ***
-PC: @     0x71fefdd25e9e  (unknown)  epoll_wait
-    @     0x71fefdc42520  (unknown)  (unknown)
-[2025-12-26 19:48:12,584 E 559473 559473] logging.cc:474: *** SIGTERM received at time=1766774892 on cpu 0 ***
-[2025-12-26 19:48:12,585 E 559473 559473] logging.cc:474: PC: @     0x71fefdd25e9e  (unknown)  epoll_wait

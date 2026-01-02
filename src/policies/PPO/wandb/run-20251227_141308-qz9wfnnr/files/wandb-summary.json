@@ -1,1 +1,0 @@
-{"Episodes": 4926, "Training_steps_per_episode": 67.85, "Training_success_rate_per_episode": 92.0, "Training_reward_per_episode": 215.5, "Testing_steps_per_episode": 72.11, "Testing_success_rate_per_episode": 89.0, "Testing_reward_per_episode": 154.89, "_timestamp": 1766842658.8314452, "_runtime": 1470.0293281078339, "_step": 49, "_wandb": {"runtime": 1469}}
