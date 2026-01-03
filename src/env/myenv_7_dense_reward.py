@@ -1,0 +1,442 @@
+import numpy as np
+import functools
+import gymnasium as gym
+from gymnasium import spaces
+from pettingzoo import ParallelEnv
+import pygame 
+import os
+from collections import defaultdict
+import random
+
+SPRITES_DIR = "./sprites"
+
+
+class MyGridWorld(ParallelEnv):
+    metadata = {"render_modes": ["human"], "name": "custom_grid_v0"}
+
+    def __init__(self, render_mode=None, n_agents = 2, grid_size=15, vision_radius = 5):
+        if grid_size<8:
+            print("Error, need to insert a grid size greater or equal to 8")
+        self.grid_size = grid_size
+        self.render_mode = render_mode
+        self.vision_radius = vision_radius
+        ######## Agents, fixed components, and forbidden positions
+        self.possible_agents = [f"agent{i}" for i in range(1, n_agents+1)]
+        self.agents = self.possible_agents[:]
+        self.gate_open = False
+
+        self.fixed_components = {
+            "button1":  {"pos": np.array([self.grid_size//2+2, 1+3+2]), "file": "button.png"},
+            "button2":  {"pos": np.array([self.grid_size//2+2, 1+1]), "file": "button.png"},
+
+            "gate_open":  {"pos": np.array([self.grid_size//2, 1+3]), "file": "gate_open.png"},
+            "gate_close":  {"pos": np.array([self.grid_size//2, 1+3]), "file": "gate_close.png"}   
+        }
+        self.button1_pos = self.fixed_components["button1"]["pos"]
+        self.button2_pos = self.fixed_components["button2"]["pos"]
+
+        self.gate_pos = self.fixed_components["gate_open"]["pos"] 
+        self.target_final_pos = self.gate_pos+[0, -1]
+
+        self.x_range = (1, self.grid_size-1-1)
+        self.y_range = (1+3+1, self.grid_size-1-1)
+        self.forbidden_position = {tuple(self.button1_pos)}    
+
+        self.max_cycles = 100
+        self.current_cycles = 0
+        ######## Pygame graphic configuration 
+        self.window_size = 810
+        self.cell_size = self.window_size // self.grid_size
+        self.window = None
+        self.clock = None
+        
+        # Walls
+        self.grid_map = np.zeros((self.grid_size, self.grid_size))
+        self.grid_map[0, :] = 1
+        self.grid_map[:, 0] = 1
+        self.grid_map[-1, :] = 1
+        self.grid_map[:, -1] = 1
+        self.grid_map[ :, 1+3] = 1
+
+        # Sprites 
+        self.agent_sprites = {}
+        self.component_sprites = {}
+
+        ######## Action space and observation space
+        # Five possible actions in each grid: stay(0), up(1), down(2), left(3), right(4)
+        self.action_spaces = {a: spaces.Discrete(5) for a in self.possible_agents}
+        OBSERVATION_DIM = 2*(len(self.agents)-1)+3*2+1
+        self.SENTINEL = (self.grid_size-1)*2
+        self.observation_spaces = {
+            a: spaces.Box(low=-(self.grid_size-1), high=self.SENTINEL, shape=(OBSERVATION_DIM,), dtype=np.float32) 
+            for a in self.possible_agents
+        }
+        self.state_spaces = {a: None for a in self.possible_agents}
+    
+    def _visible(self, my_pos, target_pos):
+        """(Manhattan distance)."""
+        delta = target_pos - my_pos
+        is_visible = np.linalg.norm(delta, ord=1) <= self.vision_radius
+        return (is_visible, delta if is_visible else np.array([self.SENTINEL,self.SENTINEL], dtype=np.float32))
+
+    def state(self):
+        observations = self.gather_observations()
+        global_state = []
+        
+        for agent in self.possible_agents:
+            if agent in observations:
+                global_state.append(observations[agent])
+            else:
+                # Se l'agente è morto/uscito, usa zeri
+                dim = self.observation_spaces[agent].shape[0]
+                global_state.append(np.zeros(dim, dtype=np.float32))
+                
+        return np.concatenate(global_state)
+
+    # Boilerplate PettingZoo
+    def observation_space(self, agent): return self.observation_spaces[agent]
+    def action_space(self, agent): return self.action_spaces[agent]
+
+    '''
+    Step in the environment
+    '''
+    def step(self, actions):
+        if not self.agents: return {}, {}, {}, {}, {}
+        self.current_cycles += 1
+        
+        rewards = {a: 0 for a in self.agents}
+
+        terminations = {a: False for a in self.agents}
+        truncations = {a: False for a in self.agents}
+        infos = {a: {"is_success":False} for a in self.agents}
+        
+        desired_positions = {}      
+        button_pressed = False
+        agents_desire_gate = []
+        for agent, action in actions.items():
+            current_pos = self.agent_positions[agent].copy()
+            target_pos = current_pos.copy()
+
+            if action == 1: target_pos[1] -= 1 
+            elif action == 2: target_pos[1] += 1
+            elif action == 3: target_pos[0] -= 1
+            elif action == 4: target_pos[0] += 1
+
+            # Monitor button, gate and walls
+            is_wall = self.grid_map[target_pos[0], target_pos[1]] == 1
+            is_gate = (target_pos == self.gate_pos).all()
+            is_button = (target_pos == self.button1_pos).all() or (target_pos == self.button2_pos).all()
+
+            if is_button:
+                button_pressed = True
+            if is_gate:
+                agents_desire_gate.append((agent, current_pos))
+            
+            if is_wall and not is_gate:
+                desired_positions[agent] = current_pos 
+            else:
+                desired_positions[agent] = target_pos
+                        
+        # If gate was open remove a wall, if gate was closed update the position of those who wanted to cross it
+        self.gate_open = button_pressed
+        pushed_agent = None
+
+        if self.gate_open:
+            self.grid_map[self.gate_pos[0], self.gate_pos[1]] = 0
+        else:            
+            self.grid_map[self.gate_pos[0], self.gate_pos[1]] = 1
+
+            for a in agents_desire_gate:
+                agent = a[0]
+                current_pos = a[1]
+                desired_positions[agent] = current_pos      # if current pos is not the gate pos
+
+                if (current_pos==self.gate_pos).all():      # if current pos is gate pos, in this case agent needs to be pushed down
+                    gate_x, gate_y = self.gate_pos
+                    candidate_cells = [
+                        np.array([gate_x,     gate_y + 1]),
+                        np.array([gate_x - 1, gate_y + 1]),
+                        np.array([gate_x + 1, gate_y + 1]),
+                    ]
+
+                    for cell in candidate_cells:
+                        if not any((cell == p).all() for p in self.agent_positions.values()):
+                            desired_positions[agent] = cell
+                            pushed_agent = (agent, cell)
+                            break
+                    # Note: if there is not a free cell the agent stays in the gate pos (should not happen)
+                  
+        # Check for conflicts (more than one agents have the same desired position)
+        final_positions = self.agent_positions.copy()
+        target_counts = defaultdict(list)         # Key: tuple(x, y) of desired positions, Value: list of agents desiring it
+        for agent, pos in desired_positions.items():
+            pos_tuple = tuple(pos)
+            target_counts[pos_tuple].append(agent)
+
+        # Solve eventual conflicts
+        for pos_tuple, agents_at_target in target_counts.items():      
+            # Case 1: no contended position
+            if len(agents_at_target) == 1:
+                agent = agents_at_target[0]
+                final_positions[agent] = desired_positions[agent]
+            
+            # Case 2: contended position
+            else:
+                if pushed_agent and tuple(pushed_agent[1]) == pos_tuple:
+                    winning_agent = pushed_agent[0]
+                else:
+                    one_agent_already_here_not_moving = None
+                    for agent in agents_at_target:
+                        if tuple(self.agent_positions[agent]) == pos_tuple:
+                            one_agent_already_here_not_moving = agent
+                            break
+
+                    winning_agent = one_agent_already_here_not_moving if one_agent_already_here_not_moving else random.choice(agents_at_target)
+                
+                final_positions[winning_agent] = desired_positions[winning_agent]
+                agents_at_target.remove(winning_agent)
+                for losing_agent in agents_at_target[:]:
+                    final_positions[losing_agent] = self.agent_positions[losing_agent] 
+        self.agent_positions = final_positions
+
+        # Negative reward if an agent is on the bottom area and is not pressing the button
+        agents_upper_area = 0
+        for a, pos in self.agent_positions.items():
+            dist_target = np.linalg.norm(pos - self.target_final_pos)
+            if pos[1]<4:                                # Agent on upper area
+                rewards[a] = +0.5
+                agents_upper_area+=1
+
+                if (pos == self.button2_pos).all():
+                    rewards[a] +=0.3
+            else:
+                rewards[a] -= (dist_target * 0.05)      # Agent on bottom area
+
+                if (pos == self.button1_pos).all():     # Agent on button
+                    rewards[a] += 0.3     
+       
+        if agents_upper_area == len(self.agents):
+            rewards = {a: +100 for a in self.agents}
+            terminations = {a: True for a in self.agents}
+            infos = {a: {"is_success":True} for a in self.agents}
+
+        if self.current_cycles >= self.max_cycles:
+            truncations= {a: True for a in self.agents}
+            
+        
+        if self.render_mode == "human":
+            self.render()
+            
+        final_obs = self.gather_observations()
+        self.agents = [a for a in self.agents if not terminations[a]]
+        return final_obs, rewards, terminations, truncations, infos
+   
+    '''
+    Determines initial condition of the simulation
+    '''
+
+    def generate_valid_position(self):
+        while True:
+            x = np.random.randint(self.x_range[0], self.x_range[1])
+            y = np.random.randint(self.y_range[0], self.y_range[1])
+            new_position = tuple((x, y))
+
+            if new_position not in self.forbidden_position:
+                return new_position
+            
+    def generate_set_initial_positions(self):
+        set_initial_positions = set()
+        while len(set_initial_positions)<len(self.possible_agents):
+            new_pos = self.generate_valid_position()
+            set_initial_positions.add(new_pos)
+        return set_initial_positions
+    
+    def generate_test_values(self, agent_num):
+        if agent_num==1:
+            return[7, 9]
+        else:
+            return [9,13]
+
+    def reset(self, seed=None, options=None):
+        self.agents = self.possible_agents[:]
+        set_initial_positions = list(self.generate_set_initial_positions())
+        self.current_cycles = 0
+
+        self.agent_positions = {}
+        for i, agent_id in enumerate(self.agents):
+            self.agent_positions[agent_id] = np.array(set_initial_positions[i])
+        
+        # To visualize the reset position if "human" mode on
+        if self.render_mode == "human":
+            self.render()         
+
+        return self.gather_observations(), {a: {} for a in self.agents}
+    
+    '''
+    Observation: [my_cur_pos, (other_cur) x number of other agents, button_pos, gate_pos, gate_open (1|0)]    '''
+    def gather_observations(self):
+        gate_status_info = np.array([int(self.gate_open)], dtype=np.float32)
+        observations = {}
+        for observing_agent in self.agents:
+            obs_segments = []
+            observing_agent_pos = self.agent_positions[observing_agent]
+            
+            for other_agent in self.agents:
+                if other_agent != observing_agent:
+                    is_visible, delta = self._visible(observing_agent_pos,self.agent_positions[other_agent])
+                    obs_segments.append(delta)
+          
+            is_visible, delta = self._visible(observing_agent_pos,self.button1_pos)
+            obs_segments.append(delta)
+           
+            is_visible, delta = self._visible(observing_agent_pos,self.button2_pos)
+            obs_segments.append(delta)
+
+            is_visible, delta = self._visible(observing_agent_pos,self.gate_pos)
+            obs_segments.append(delta)
+
+            obs_segments.append(gate_status_info if is_visible else np.array([-1], dtype=np.float32))
+            observations[observing_agent] = np.concatenate(obs_segments, dtype=np.float32)
+        return observations
+
+    '''
+    Functions for Sprite rendering and loading
+    '''    
+    def _create_missing_sprite(self, text, bg_color, border_color = (0,0,0)):  
+        error_sprite = pygame.Surface((self.cell_size, self.cell_size), pygame.SRCALPHA)
+        error_sprite.fill((0, 0, 0, 0))
+        center = (self.cell_size // 2, self.cell_size // 2)
+        radius = int(self.cell_size * 0.4)
+        pygame.draw.circle(error_sprite, bg_color, center, radius) 
+        pygame.draw.circle(error_sprite, border_color, center, radius, 2)
+        
+        # Add text label
+        try:
+            font_size = int(self.cell_size * 0.22)
+            font = pygame.font.Font(None, font_size)   
+            text_color = (0, 0, 0) if sum(bg_color) > 300 else (255, 255, 255) 
+            text_surface = font.render(text, True, text_color)
+            text_rect = text_surface.get_rect(center=center)
+            error_sprite.blit(text_surface, text_rect)
+            
+        except Exception as e:
+            print(f"WARNING: Error while writing text inside missing sprite {text}. A missing sprite without text label will be used for this simulation.")
+            pass
+            
+        return error_sprite
+    
+    def _load_and_scale_sprite(self, filename, component_name):
+        path = os.path.join(SPRITES_DIR, filename)
+    
+        try:
+            image = pygame.image.load(path).convert_alpha() 
+            scaled_size = int(self.cell_size )
+            return pygame.transform.scale(image, (scaled_size, scaled_size))
+            
+        except (FileNotFoundError, pygame.error) as e:
+            print(f"WARNING! Sprite image {path} not found. Using default sprite for this simulation.")
+    
+            text = component_name.upper() if component_name else "ERROR"
+            bg_color = (100, 100, 255) if "AGENT" in text else (128,128,128) # Blue agent, Gray fixed components
+            return self._create_missing_sprite(text, bg_color)
+
+    def render(self):
+        if self.render_mode is None:
+            return
+
+        if self.window is None:
+            pygame.init()
+            pygame.display.init()
+            pygame.font.init()
+            self.window = pygame.display.set_mode((self.window_size, self.window_size))
+            
+            for agent_name in self.agents:
+               # self.agent_sprites[agent_name] = self._load_and_scale_sprite(f"{agent_name}.png", agent_name)
+               self.agent_sprites[agent_name] = self._load_and_scale_sprite(".png", agent_name)
+
+            for name, data in self.fixed_components.items():
+                self.component_sprites[name] = self._load_and_scale_sprite(data["file"], name)
+
+                 
+        if self.clock is None:
+            self.clock = pygame.time.Clock()
+
+        canvas = pygame.Surface((self.window_size, self.window_size))
+        canvas.fill((220, 220, 220)) 
+        pix_square_size = self.cell_size 
+        sprite_offset = (pix_square_size - int(pix_square_size * 0.8)) // 2
+
+        # Render walls
+        for x in range(self.grid_size):
+            for y in range(self.grid_size):
+                if self.grid_map[x, y] == 1:
+                    pygame.draw.rect(
+                        canvas, 
+                        (50, 50, 50),
+                        pygame.Rect(x * pix_square_size, y * pix_square_size, pix_square_size, pix_square_size)
+                    )
+
+        # Render fixed components and agents
+        for name, data in self.fixed_components.items():
+            if self.gate_open and name == "gate_close":
+                continue
+            pos = data["pos"]
+            x_coord = pos[0] * pix_square_size + sprite_offset
+            y_coord = pos[1] * pix_square_size + sprite_offset
+            sprite = self.component_sprites[name]
+            canvas.blit(sprite, (x_coord, y_coord))
+
+        for agent in self.agents:
+            pos = self.agent_positions[agent]            
+            x_coord = pos[0] * pix_square_size + sprite_offset
+            y_coord = pos[1] * pix_square_size + sprite_offset
+            
+            sprite = self.agent_sprites[agent]
+            canvas.blit(sprite, (x_coord, y_coord))
+
+        # Render the grid
+        for x in range(self.grid_size + 1):
+            pygame.draw.line(
+                canvas, 0, (0, pix_square_size * x), (self.window_size, pix_square_size * x), width=2
+            )
+            pygame.draw.line(
+                canvas, 0, (pix_square_size * x, 0), (pix_square_size * x, self.window_size), width=2
+            )
+
+        # Display the render
+        self.window.blit(canvas, canvas.get_rect())
+        pygame.event.pump()
+        pygame.display.update()
+        self.clock.tick(4) # FPS
+
+    def close(self):
+        if self.window is not None:
+            pygame.display.quit()
+            pygame.quit()
+
+# My test execution
+if __name__ == '__main__':
+    env = MyGridWorld(render_mode="human")
+    observations, infos = env.reset()
+    print(observations)
+
+    print("Inizio simulazione. Premi Ctrl+C per uscire.")
+    
+    try:
+        for i in range(50): 
+            agent_1 = 1
+            agent_2 = 1 if observations["agent2"][1] !=1+3+2 or i>20 else 0 
+            actions = {
+                "agent1": agent_1, 
+                "agent2": agent_2
+
+            }            
+            observations, rewards, terminations, truncations, infos = env.step(actions)
+            if not env.agents:
+                print(f"Step {i}: Tutti gli agenti hanno terminato. Reset.")
+                env.reset()
+            
+    except KeyboardInterrupt:
+        print("\nSimulazione interrotta dall'utente.")
+    finally:
+        env.close()
