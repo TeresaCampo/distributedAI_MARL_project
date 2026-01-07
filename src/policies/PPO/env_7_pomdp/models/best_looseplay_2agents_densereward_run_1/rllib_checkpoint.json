@@ -1,1 +1,0 @@
-{"type": "Algorithm", "checkpoint_version": "1.1", "format": "cloudpickle", "state_file": "/home/terra/Desktop/magistrale/distributed_ai_project/src/policies/PPO/env_7_pomdp/models/looseplay_2agents_densereward_run_1/algorithm_state.pkl", "policy_ids": ["agent2", "agent1"], "ray_version": "2.53.0", "ray_commit": "0de211850589aea71f842873bc32574c702ab492"}
