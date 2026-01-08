@@ -82,7 +82,7 @@ It is equivalent to SENTINEL if the gate is not in the visibility radius.
 - gate_open, is an int value that represent wheather the gate is open (1) or close (0).  
 It is equivalent to -1 if the gate is not in the visibility radius.
 
-SENTINEL is an high, infeasible distance, in particular it is equivalent to 2*grid_size.
+SENTINEL is an high, infeasible distance, in particular it is equivalent to 2*vision_radius.
 
 ## Learning process
 In this project I focused on indipendent learning, comparing **strict self play** and **loose self play**.  
