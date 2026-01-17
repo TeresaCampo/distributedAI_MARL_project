@@ -223,7 +223,9 @@ class MyGridWorld(ParallelEnv):
 
     def reset(self, seed=None, options=None):
         self.agents = self.possible_agents[:]
-        set_initial_positions = list(self.generate_set_initial_positions())
+        # set_initial_positions = list(self.generate_set_initial_positions())
+        set_initial_positions = list((self.generate_test_values(1), self.generate_test_values(2)))
+
         self.current_cycles = 0
 
         self.agent_positions = {}
