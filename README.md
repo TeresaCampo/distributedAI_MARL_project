@@ -60,7 +60,9 @@ Where:
 - gate_open, is an int value that represent wheather the gate is open (1) or close (0)
 
 ## Env7
-**Env6** is the hardest scenario because of the partial observability.
+**Env7** is the hardest scenario because of the partial observability.
+
+<img src="readme_resources/demo_env7.gif" alt="Demo env7" width="350">
 
 ### Elements
 Variable number of agents (in the simulation 2 and 4).

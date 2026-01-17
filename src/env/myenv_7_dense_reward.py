@@ -349,48 +349,31 @@ class MyGridWorld(ParallelEnv):
             text = component_name.upper() if component_name else "ERROR"
             bg_color = (100, 100, 255) if "AGENT" in text else (128,128,128) # Blue agent, Gray fixed components
             return self._create_missing_sprite(text, bg_color)
-
+    
     def _create_vision_overlay(self, agent_pos, agent_idx):
-        """Create a semi-transparent surface showing agent's vision radius."""
         overlay = pygame.Surface((self.window_size, self.window_size), pygame.SRCALPHA)
 
-        # Get agent color with transparency
         color = self.agent_colors[agent_idx % len(self.agent_colors)]
-
-        # Draw vision cells with gradient effect
-        center_x, center_y = agent_pos[0], agent_pos[1]
-
-        for x in range(self.grid_size):
-            for y in range(self.grid_size):
-                # Calculate Manhattan distance
-                dist = abs(x - center_x) + abs(y - center_y)
-
-                if dist <= self.vision_radius:
-                    # Gradient alpha: stronger at center, weaker at edges
-                    alpha = int(60 * (1 - dist / (self.vision_radius + 1)))
-                    cell_color = (*color, alpha)
-
-                    rect = pygame.Rect(
-                        x * self.cell_size,
-                        y * self.cell_size,
-                        self.cell_size,
-                        self.cell_size
-                    )
-                    pygame.draw.rect(overlay, cell_color, rect)
-
-        # Draw vision boundary circle (approximate)
+        alpha_fill = 50  
+        alpha_border = 100 
+        
         center_pixel = (
-            int((center_x + 0.5) * self.cell_size),
-            int((center_y + 0.5) * self.cell_size)
-        )
+            int((agent_pos[0] + 0.5) * self.cell_size),
+            int((agent_pos[1] + 0.5) * self.cell_size)
+        )       
         radius_pixel = int((self.vision_radius + 0.5) * self.cell_size)
 
-        # Draw outer circle boundary
         pygame.draw.circle(
-            overlay,
-            (*color, 100),
-            center_pixel,
-            radius_pixel,
+            overlay, 
+            (*color, alpha_fill), 
+            center_pixel, 
+            radius_pixel
+        )
+        pygame.draw.circle(
+            overlay, 
+            (*color, alpha_border), 
+            center_pixel, 
+            radius_pixel, 
             width=2
         )
 
